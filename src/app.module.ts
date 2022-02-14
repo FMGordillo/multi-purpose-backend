@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { StormDbService } from './lowdb/lowdb.service';
+import { StormDbService } from './stormdb/stormdb.service';
 
 @Module({
   imports: [],
   controllers: [AppController],
-  providers: [AppService, StormDbService],
+  providers: [StormDbService],
 })
 export class AppModule {}

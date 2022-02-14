@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { StormDbService } from './lowdb.service';
+import { StormDbService } from './stormdb.service';
 
-describe('LowDb service', () => {
+describe('StormDB service', () => {
   let service = StormDbService;
 
   beforeEach(async () => {

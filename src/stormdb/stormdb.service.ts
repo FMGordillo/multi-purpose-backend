@@ -2,13 +2,15 @@ import * as uuid from 'uuid';
 import type StormDB from 'stormdb';
 import { Injectable } from '@nestjs/common';
 
-type Todo = {
+export type Todo = {
   id: string;
   text: string;
   done: boolean;
 };
+export type TodoUpdate = Required<Pick<Todo, 'id'>> & Partial<Todo>;
 
 /**
+ * TODO: Add type assertion
  * TODO: Add collections support
  */
 @Injectable()
@@ -20,7 +22,7 @@ export class StormDbService {
   }
 
   private async initDatabase() {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const StormDB = require('stormdb');
     try {
       const engine = new StormDB.localFileEngine('../db.stormdb');
@@ -36,7 +38,7 @@ export class StormDbService {
   }
 
   async find(id: string) {
-    const todos = this.db.get('data') as unknown as Todo[];
+    const todos = this.db.get('todos').value() as unknown as Todo[];
     const todo = todos.find((t) => t.id === id);
     return todo;
   }
@@ -55,12 +57,11 @@ export class StormDbService {
       done: done !== undefined ? done : false,
       text: text || '',
     };
-    const todos = await this.findAll();
     // @ts-ignore
-    todos.push(_data).save();
+    this.db.get('todos').push(_data).save();
   }
 
-  async update(data: Required<Pick<Todo, 'id'>> & Partial<Todo>) {
+  async update(data: TodoUpdate) {
     const todos = await this.findAll();
     const currentTodo = todos.find((t) => t.id === data.id);
     if (!currentTodo) {
@@ -75,7 +76,5 @@ export class StormDbService {
     // @ts-ignore
     this.db.get('todos').setValue(newTodos);
     this.db.save();
-
-    return currentTodo;
   }
 }
