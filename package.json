@@ -1,7 +1,7 @@
 {
-  "name": "todo-backend",
+  "name": "multi-purpose-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "A dummy backend with a local DB for To-Do tasks",
   "author": "",
   "private": true,
   "license": "MIT",
